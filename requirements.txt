@@ -1,3 +1,27 @@
+# pip install -r requirements.txt
+
+# --------- base --------- #
 lightning-flash
 icevision
 lightning-flash[image]
+
+# --------- hydra --------- #
+hydra-core>=1.1.0
+hydra-colorlog>=1.1.0
+hydra-optuna-sweeper>=1.1.0
+
+# --------- loggers --------- #
+wandb
+
+# --------- linters --------- #
+pre-commit      # hooks for applying linters on commit
+black           # code formatting
+isort           # import sorting
+flake8          # code analysis
+nbstripout      # remove output from jupyter notebooks
+
+# --------- others --------- #
+python-dotenv   # loading env variables from .env file
+rich            # beautiful text formatting in terminal
+pytest          # tests
+sh              # for running bash commands in some tests
