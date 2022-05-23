@@ -12,6 +12,7 @@
 </div>
 
 ## 📌&nbsp;&nbsp;Task lists
+
 - [x] Lightning
 - [x] Flash
 - [x] Hydra config
@@ -28,9 +29,6 @@
 ## ⚡&nbsp;&nbsp;Introduction
 
 The Baseline Lightning-flash template to deep learning project.
-
-
-
 
 ## 🚀&nbsp;&nbsp;Quickstart
 
@@ -50,18 +48,18 @@ conda activate Brightening
 pip install -r requirements.txt
 ```
 
-
 Log in W&B:
+
 ```bash
 wandb login
 ```
 
 install hooks from .pre-commit-config.yaml:
+
 ```bash
 pre-commit install
 pre-commit run -a
 ```
-
 
 Train model with default configuration
 
