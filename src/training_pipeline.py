@@ -15,23 +15,6 @@ log = utils.get_logger(__name__)
 
 
 def train(config: DictConfig) -> Optional[float]:
-    print(config.data_dir)
-
-    # 1. Create the DataModule
-    # Dataset Credit: https://www.kaggle.com/ultralytics/coco128
-    download_data(
-        "https://github.com/zhiqwang/yolov5-rt-stack/releases/download/v0.3.0/coco128.zip",
-        config.data_dir,
-    )
-
-    datamodule = ObjectDetectionData.from_coco(
-        train_folder=config.data_dir + "coco128/images/train2017/",
-        train_ann_file=config.data_dir + "coco128/annotations/instances_train2017.json",
-        val_split=0.1,
-        transform_kwargs={"image_size": 512},
-        batch_size=4,
-    )
-
     # Init lightning loggers
     logger: List[LightningLoggerBase] = []
     if "logger" in config:
@@ -47,6 +30,21 @@ def train(config: DictConfig) -> Optional[float]:
             if "_target_" in cb_conf:
                 log.info(f"Instantiating callback <{cb_conf._target_}>")
                 callbacks.append(hydra.utils.instantiate(cb_conf))
+
+    # 1. Create the DataModule
+    # Dataset Credit: https://www.kaggle.com/ultralytics/coco128
+    download_data(
+        "https://github.com/zhiqwang/yolov5-rt-stack/releases/download/v0.3.0/coco128.zip",
+        config.data_dir,
+    )
+
+    datamodule = ObjectDetectionData.from_coco(
+        train_folder=config.data_dir + "coco128/images/train2017/",
+        train_ann_file=config.data_dir + "coco128/annotations/instances_train2017.json",
+        val_split=0.1,
+        transform_kwargs={"image_size": 512},
+        batch_size=4,
+    )
 
     # 2. Build the task
     model = ObjectDetector(
@@ -74,3 +72,7 @@ def train(config: DictConfig) -> Optional[float]:
 
     # 5. Save the model!
     trainer.save_checkpoint("object_detection_model.pt")
+
+    # Print path to best checkpoint
+    if not config.trainer.get("fast_dev_run") and config.get("train"):
+        log.info(f"Best model ckpt at {trainer.checkpoint_callback.best_model_path}")

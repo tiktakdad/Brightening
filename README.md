@@ -11,9 +11,25 @@
 
 </div>
 
-## Description
+## 📌&nbsp;&nbsp;Task lists
+- [x] Lightning
+- [x] Flash
+- [x] Hydra config
+- [x] Base training pipeline
+- [x] Linters - code/docstring/yaml formatting, sorting, code analysis, cell output clear(jupyter)
+- [x] W&B
+- [ ] Hyper parameter tuning pipeline (model backbone/head, lr, batch size..etc)
+- [ ] Target Model Training / Test
+- [ ] Dataset Versioning (DVC)
+- [ ] Model Versioning (mlflow)
+- [ ] Model Serving (kubernates, bentoml)
+- [ ] Monitoring (prometheus & grafana)
 
-What it does
+## ⚡&nbsp;&nbsp;Introduction
+
+The Baseline Lightning-flash template to deep learning project.
+
+
 
 
 ## 🚀&nbsp;&nbsp;Quickstart
@@ -35,9 +51,14 @@ pip install -r requirements.txt
 ```
 
 
-Log in W&B
+Log in W&B:
 ```bash
 wandb login
+```
+
+install hooks from .pre-commit-config.yaml:
+```bash
+pre-commit install
 pre-commit run -a
 ```
 
@@ -64,7 +85,7 @@ You can override any parameter from command line like this
 python train.py trainer.max_epochs=20 datamodule.batch_size=64
 ```
 
-## Other Repositories
+## ❤️&nbsp;&nbsp;Other Repositories
 
 <details>
 <summary><b>Inspirations</b></summary>
