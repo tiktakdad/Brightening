@@ -13,18 +13,19 @@
 
 ## 📌&nbsp;&nbsp;Task lists
 
-- [x] Lightning
-- [x] Flash
+- [x] PyTorch lightning
+- [x] Lighting flash
 - [x] Hydra config
+- [x] Dataset preparing (coco128)
 - [x] Base training pipeline
-- [x] Linters - code/docstring/yaml formatting, sorting, code analysis, cell output clear(jupyter)
-- [x] W&B
-- [ ] Hyper parameter tuning pipeline (model backbone/head, lr, batch size..etc)
+- [x] Linters: code/docstring/yaml formatting, sorting, code analysis, cell output clear(jupyter)
+- [x] Weight and Bias
+- [ ] Hyper parameter tuning (model backbone/head, lr, batch size..etc)
 - [ ] Target Model Training / Test
-- [ ] Dataset Versioning (DVC)
 - [ ] Model Versioning (mlflow)
 - [ ] Model Serving (kubernates, bentoml)
 - [ ] Monitoring (prometheus & grafana)
+- [ ] Dataset Versioning (DVC)
 
 ## ⚡&nbsp;&nbsp;Introduction
 
@@ -48,17 +49,15 @@ conda activate Brightening
 pip install -r requirements.txt
 ```
 
-Log in W&B:
-
-```bash
-wandb login
-```
-
 install hooks from .pre-commit-config.yaml:
-
 ```bash
 pre-commit install
 pre-commit run -a
+```
+
+Log in W&B:
+```bash
+wandb login
 ```
 
 Train model with default configuration

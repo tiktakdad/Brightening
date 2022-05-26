@@ -16,9 +16,10 @@ def main(config: DictConfig):
 
     # Applies optional utilities
     utils.extras(config)
+    model = train(config)
 
     # Train model
-    return train(config)
+    return model
 
 
 if __name__ == "__main__":

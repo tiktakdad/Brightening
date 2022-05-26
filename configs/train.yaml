@@ -3,7 +3,15 @@
 # specify here default training configuration
 defaults:
   - _self_
-  - logger: wandb # set logger here or use command line (e.g. `python train.py logger=tensorboard`)
+  - logger: wandb
+  - callbacks: wandb
+  - trainer: default
+  - datamodule: coco128
+  - model: object_detector
+  #- sweep: wandb
+  # enable color logging
+  - override hydra/hydra_logging: colorlog
+  - override hydra/job_logging: colorlog
 
 # path to original working directory
 # hydra hijacks working directory by changing it to the new log directory

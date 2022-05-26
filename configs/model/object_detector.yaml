@@ -1,0 +1,8 @@
+_target_: flash.image.detection.model.ObjectDetector
+
+num_classes: 91
+head: "efficientdet"
+backbone: "d0"
+image_size: 512
+pretrained: True
+optimizer: "Adam"

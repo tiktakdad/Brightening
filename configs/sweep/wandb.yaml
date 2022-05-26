@@ -1,0 +1,57 @@
+method: bayes
+metric:
+  goal: minimize
+  name: val_class_loss
+parameters:
+  backbone:
+    distribution: categorical
+    values:
+      - d0
+  batch_size:
+    distribution: int_uniform
+    max: 8
+    min: 2
+  epochs:
+    distribution: int_uniform
+    max: 4
+    min: 1
+  head:
+    distribution: categorical
+    values:
+      - efficientdet
+  image_size:
+    distribution: int_uniform
+    max: 1024
+    min: 256
+  labels:
+    distribution: categorical
+    values:
+      - None
+  learning_rate:
+    distribution: categorical
+    values:
+      - None
+  lr_scheduler:
+    distribution: categorical
+    values:
+      - None
+  optimizer:
+    distribution: categorical
+    values:
+      - Adam
+  predict_kwargs:
+    distribution: categorical
+    values:
+      - None
+  pretrained:
+    distribution: categorical
+    values:
+      - "true"
+      - "false"
+#program: train.py
+
+#command:
+#  - ${env}
+#  - python
+#  - ${program}
+#  - ${args_no_hyphens}
