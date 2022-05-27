@@ -5,4 +5,3 @@ head: "efficientdet"
 backbone: "d0"
 image_size: 512
 pretrained: True
-optimizer: "Adam"

@@ -1,6 +1,5 @@
-_target_: src.datamodules.flash_object_detection_data_module.FlashObjectDetectionData
-
-data_dir: ${data_dir} # data_dir is specified in config.yaml
-batch_size: 64
+train_folder: ${data_dir}coco128/images/train2017/
+train_ann_file: ${data_dir}coco128/annotations/instances_train2017.json
 val_split: 0.1
 transform_kwargs: { "image_size": 512 }
+batch_size: 32
