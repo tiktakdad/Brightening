@@ -6,7 +6,7 @@ defaults:
   - logger: wandb
   - callbacks: wandb
   - trainer: default
-  - datamodule: coco
+  - datamodule: venus
   - model: object_detector
   #- sweep: wandb
   # enable color logging

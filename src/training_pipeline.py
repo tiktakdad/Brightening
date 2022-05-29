@@ -10,6 +10,7 @@ from pytorch_lightning.loggers import LightningLoggerBase
 
 from src import utils
 from src.datamodules.flash_object_detection_data_module import FlashObjectDetectionData
+from src.utils.wandb_bbox_log import wandb_bounding_boxes
 
 log = utils.get_logger(__name__)
 
@@ -41,11 +42,28 @@ def train(config: DictConfig) -> Optional[float]:
 
     # Init lightning datamodule
     # 2. Build the task
-    log.info(f"Instantiating model <{config.model._target_}>")
-    model: ObjectDetector = hydra.utils.instantiate(config.model)
+
 
     log.info(f"Instantiating datamodule <{config.datamodule._target_}>")
-    datamodule: FlashObjectDetectionData.get_dataset = hydra.utils.instantiate(config.datamodule)
+    f_data: FlashObjectDetectionData = hydra.utils.instantiate(config.datamodule)
+    datamodule = f_data.get_dataset
+    labels = datamodule.labels
+    '''
+    datamodule = ObjectDetectionData.from_voc(train_folder=config.data_dir+'venus/images/train/',
+                                      train_ann_folder=config.data_dir+'venus/annotations/train/',
+                                      test_folder=config.data_dir+'venus/images/test/',
+                                      test_ann_folder=config.data_dir+'venus/annotations/test/',
+                                      transform_kwargs={"image_size": 640},
+                                      val_split=0.1,
+                                      labels=["venus"],
+                                      pin_memory=True,
+                                      num_workers=4,
+                                      batch_size=4)
+                                      '''
+
+    log.info(f"Instantiating model <{config.model._target_}>")
+    model: ObjectDetector = hydra.utils.instantiate(config.model, num_classes=datamodule.num_classes)
+
     """
     datamodule = ObjectDetectionData.from_coco(
         train_folder=config.datamodule.train_folder,
@@ -69,7 +87,7 @@ def train(config: DictConfig) -> Optional[float]:
     # Init lightning trainer
     log.info(f"Instantiating trainer <{config.trainer._target_}>")
     trainer: flash.Trainer = hydra.utils.instantiate(
-        config.trainer, callbacks=callbacks, logger=logger, _convert_="partial"
+        config.trainer, callbacks=callbacks, logger=logger, _convert_="partial", fast_dev_run=False
     )
 
     """
@@ -89,6 +107,25 @@ def train(config: DictConfig) -> Optional[float]:
 
     # 5. Save the model!
     trainer.save_checkpoint("object_detection_model.pt")
+
+    trainer.test(model, datamodule=datamodule)
+
+    datamodule = ObjectDetectionData.from_files(
+        predict_files=[
+            config.data_dir + "venus/images/test/img_000061.jpg",
+            config.data_dir + "venus/images/test/img_000281.jpg",
+            config.data_dir + "venus/images/test/img_200135.jpg",
+            config.data_dir + "venus/images/test/img_200487.jpg",
+        ],
+        batch_size=4,
+        transform_kwargs={"image_size": config.model.image_size},
+    )
+    predictions = trainer.predict(model, datamodule=datamodule)
+    print(predictions)
+
+
+    wandb_bounding_boxes(trainer, predictions, labels)
+
 
     """
     # Print path to best checkpoint

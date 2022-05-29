@@ -3,7 +3,7 @@ _target_: flash.core.trainer.Trainer
 gpus: 1
 
 min_epochs: 1
-max_epochs: 100
+max_epochs: 300
 
 # number of validation steps to execute at the beginning of the training
 # num_sanity_val_steps: 0

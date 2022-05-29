@@ -5,6 +5,7 @@ from typing import List
 import matplotlib.pyplot as plt
 import seaborn as sn
 import torch
+from flash import DataKeys
 from pytorch_lightning import Callback, Trainer
 from pytorch_lightning.loggers import LoggerCollection, WandbLogger
 from pytorch_lightning.utilities import rank_zero_only
@@ -268,13 +269,12 @@ class LogImagePredictions(Callback):
         if self.ready:
             logger = get_wandb_logger(trainer=trainer)
             experiment = logger.experiment
-
             # get a validation batch from the validation dat loader
             val_samples = next(iter(trainer.datamodule.val_dataloader()))
-            val_imgs, val_labels = val_samples
+            val_imgs, val_labels = val_samples[DataKeys.INPUT][0]
 
             # run the batch through the network
-            val_imgs = val_imgs.to(device=pl_module.device)
+            #val_imgs = val_imgs.to(device=pl_module.device)
             logits = pl_module(val_imgs)
             preds = torch.argmax(logits, dim=-1)
 
