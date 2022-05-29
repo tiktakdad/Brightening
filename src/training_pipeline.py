@@ -2,20 +2,24 @@ from typing import List, Optional
 
 import flash
 import hydra
+from flash import DataModule
 from flash.image import ObjectDetectionData, ObjectDetector
 from omegaconf import DictConfig
 from pytorch_lightning import Callback, seed_everything
 from pytorch_lightning.loggers import LightningLoggerBase
 
 from src import utils
+from src.datamodules.flash_object_detection_data_module import FlashObjectDetectionData
 
 log = utils.get_logger(__name__)
 
 
 def train(config: DictConfig) -> Optional[float]:
-
     if config.get("seed"):
         seed_everything(config.seed, workers=True)
+
+    print(ObjectDetector.available_backbones())
+
 
     # Init lightning loggers
     logger: List[LightningLoggerBase] = []
@@ -34,19 +38,14 @@ def train(config: DictConfig) -> Optional[float]:
                 callbacks.append(hydra.utils.instantiate(cb_conf))
 
     # 1. Create the DataModule
-    # log.info(f"Instantiating datamodule <{config.datamodule._target_}>")
+
     # Init lightning datamodule
-    datamodule = ObjectDetectionData.from_coco(
-        train_folder=config.datamodule.train_folder,
-        train_ann_file=config.datamodule.train_ann_file,
-        test_folder=config.datamodule.test_folder,
-        test_ann_file=config.datamodule.test_ann_file,
-        transform_kwargs=config.datamodule.transform_kwargs,
-        batch_size=config.datamodule.batch_size,
-        pin_memory=True,
-        num_workers=8,
-        val_split=0.1,
-    )
+    # 2. Build the task
+    log.info(f"Instantiating model <{config.model._target_}>")
+    model: ObjectDetector = hydra.utils.instantiate(config.model)
+
+    log.info(f"Instantiating datamodule <{config.datamodule._target_}>")
+    datamodule: FlashObjectDetectionData.get_dataset = hydra.utils.instantiate(config.datamodule)
     """
     datamodule = ObjectDetectionData.from_coco(
         train_folder=config.datamodule.train_folder,
@@ -59,9 +58,7 @@ def train(config: DictConfig) -> Optional[float]:
     )
     """
 
-    # 2. Build the task
-    log.info(f"Instantiating model <{config.model._target_}>")
-    model: ObjectDetector = hydra.utils.instantiate(config.model)
+
     """
     model = ObjectDetector(head=wandb.config
                            .head, backbone=wandb.config

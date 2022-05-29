@@ -1,6 +1,6 @@
 _target_: flash.core.trainer.Trainer
 
-gpus: -1
+gpus: 1
 
 min_epochs: 1
 max_epochs: 100

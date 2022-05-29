@@ -1,7 +1,7 @@
 _target_: flash.image.detection.model.ObjectDetector
 
-num_classes: 91
-head: "efficientdet"
-backbone: "d0"
-image_size: 512
+head: "yolov5"
+backbone: "medium"
+image_size: 640
+num_classes: 1
 pretrained: True

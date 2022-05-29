@@ -5,5 +5,5 @@ train_folder: ${data_dir}coco/images/train2017/
 train_ann_file: ${data_dir}coco/annotations/instances_train2017.json
 test_folder: ${data_dir}coco/images/val2017/
 test_ann_file: ${data_dir}coco/annotations/instances_val2017.json
-transform_kwargs: { "image_size": 512 }
+transform_kwargs: { "image_size": 600 }
 batch_size: 32
