@@ -3,9 +3,6 @@
 # specify here default training configuration
 defaults:
   - _self_
-#  - logger: wandb
-#  - callbacks: wandb
-  - trainer: default
   - datamodule: venus
   - model: object_detector
   #- sweep: wandb

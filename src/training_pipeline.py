@@ -110,6 +110,7 @@ def train(config: DictConfig) -> Optional[float]:
 
     trainer.test(model, datamodule=datamodule)
 
+
     datamodule = ObjectDetectionData.from_files(
         predict_files=[
             config.data_dir + "venus/images/test/img_000061.jpg",

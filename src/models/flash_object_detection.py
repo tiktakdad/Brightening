@@ -13,12 +13,14 @@
 # limitations under the License.
 from typing import Any, Dict, List, Optional
 
+import torch
 from flash.core.adapter import AdapterTask
 from flash.core.model import Task
 from flash.core.registry import FlashRegistry
 from flash.core.utilities.types import LR_SCHEDULER_TYPE, OPTIMIZER_TYPE
 from flash.image.detection.backbones import OBJECT_DETECTION_HEADS
 from flash.image.detection.output import OBJECT_DETECTION_OUTPUTS
+from torch import nn
 
 
 class FlashObjectDetector(AdapterTask):
@@ -86,6 +88,18 @@ class FlashObjectDetector(AdapterTask):
     def _ci_benchmark_fn(self, history: List[Dict[str, Any]]) -> None:
         """This function is used only for debugging usage with CI."""
         # todo
+
+
+
+    def step(self, batch: Any, batch_idx: int, metrics: nn.ModuleDict) -> Any:
+        return super().step(batch, batch_idx, metrics)
+
+    def predict_step(self, batch: Any, batch_idx: int, dataloader_idx: int = 0) -> Any:
+        return super().predict_step(batch, batch_idx, dataloader_idx)
+
+    def predict(self, *args, **kwargs):
+
+        return super().predict(*args, **kwargs)
 
     @property
     def predict_kwargs(self) -> Dict[str, Any]:
